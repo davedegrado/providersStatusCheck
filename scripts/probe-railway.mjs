@@ -1,17 +1,24 @@
-// Diagnostica: struttura di status.railway.com/api/status (giorni storici omessi) e residui Instatus.
+// Diagnostica: stato "di oggi" ricavabile da status.railway.com/api/status e confronto con Instatus.
 const get = async (u) => {
   const r = await fetch(u, { headers: { Origin: 'https://davedegrado.github.io' }, signal: AbortSignal.timeout(15000) });
   return { r, t: await r.text() };
 };
-const strip = (v) => JSON.stringify(v, (k, x) => (k === 'months' ? `[${x.length} mesi omessi]` : x), 1);
 const { r, t } = await get('https://status.railway.com/api/status');
-console.log('ACAO', r.headers.get('access-control-allow-origin'), 'cache', r.headers.get('cache-control'));
+console.log('HTTP', r.status, 'ACAO', r.headers.get('access-control-allow-origin'), 'cache', r.headers.get('cache-control'));
 const j = JSON.parse(t);
-console.log('chiavi top', Object.keys(j));
-console.log(strip(j).slice(0, 6000));
-for (const u of ['https://status.railway.com/api/incidents', 'https://status.railway.com/api/status?x=1', 'https://railway.instatus.com/v2/components.json', 'https://railway.instatus.com/v2/incidents.json', 'https://railway.instatus.com/', 'https://resend-status.com/api/v2/incidents/unresolved.json', 'https://resend-status.com/api/v2/incidents.json', 'https://status.supabase.com/api/v2/incidents/unresolved.json']) {
-  try {
-    const { r, t } = await get(u);
-    console.log(`\n=== ${u}\nHTTP ${r.status} ${r.headers.get('content-type')} ACAO=${r.headers.get('access-control-allow-origin')} final=${r.url}\n${t.slice(0, 700).replace(/\s+/g, ' ')}`);
-  } catch (e) { console.log(`\n=== ${u}\nERRORE ${e.message}`); }
+console.log('chiavi top', Object.keys(j), 'altro:', JSON.stringify(Object.fromEntries(Object.entries(j).filter(([k]) => k !== 'entries'))).slice(0, 3000));
+const comps = j.entries.flatMap((e) => (e.type === 'group' ? e.data.components : [e.data]));
+console.log('componenti', comps.length, 'chiavi componente', Object.keys(comps[0]));
+const day = comps[0].months.at(-1).days.at(-1);
+console.log('ultimo giorno', JSON.stringify(day), 'chiavi giorno', Object.keys(day));
+console.log('stati giornalieri distinti', [...new Set(comps.flatMap((c) => c.months.flatMap((m) => m.days.map((d) => d.status))))]);
+for (const c of comps) {
+  const d = c.months.at(-1).days.at(-1);
+  if (d.status !== 'operational' || d.incidents.length) console.log('OGGI non ok:', c.name, JSON.stringify(d).slice(0, 800));
 }
+const sample = comps.flatMap((c) => c.months.flatMap((m) => m.days)).find((d) => d.incidents.length);
+console.log('esempio incidente', JSON.stringify(sample).slice(0, 1500));
+
+const ic = JSON.parse((await get('https://railway.instatus.com/v2/components.json')).t);
+console.log('\nInstatus componenti non OPERATIONAL:', ic.components.filter((c) => c.status !== 'OPERATIONAL').map((c) => `${c.group?.name} / ${c.name}: ${c.status}`));
+console.log('Instatus stati distinti', [...new Set(ic.components.map((c) => c.status))], 'n', ic.components.length);
