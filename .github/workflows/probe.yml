@@ -12,3 +12,4 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/probe.mjs
+      - run: node scripts/componenti.mjs
