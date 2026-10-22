@@ -1,0 +1,11 @@
+{
+  "name": "providers-status-check",
+  "private": true,
+  "type": "module",
+  "description": "Dashboard statica dello stato dei provider, pubblicata su GitHub Pages",
+  "scripts": {
+    "build": "node scripts/build-status.mjs _site",
+    "test": "node --test tests/*.test.mjs",
+    "probe": "node scripts/probe.mjs"
+  }
+}

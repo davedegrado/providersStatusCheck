@@ -1,0 +1,61 @@
+[
+  {
+    "id": "cloudflare",
+    "name": "Cloudflare",
+    "statusPage": "https://www.cloudflarestatus.com",
+    "api": "https://www.cloudflarestatus.com/api/v2/summary.json",
+    "type": "statuspage",
+    "cors": true
+  },
+  {
+    "id": "supabase",
+    "name": "Supabase",
+    "statusPage": "https://status.supabase.com",
+    "api": "https://status.supabase.com/api/v2/summary.json",
+    "type": "statuspage",
+    "cors": true,
+    "note": "Ospitata su incident.io, API compatibile Statuspage"
+  },
+  {
+    "id": "railway",
+    "name": "Railway",
+    "statusPage": "https://status.railway.com",
+    "api": "https://status.railway.com/api/status",
+    "type": "railway",
+    "cors": false,
+    "note": "Pagina proprietaria (non più Instatus); nessun header CORS, solo dal workflow"
+  },
+  {
+    "id": "resend",
+    "name": "Resend",
+    "statusPage": "https://resend-status.com",
+    "api": "https://resend-status.com/api/v2/summary.json",
+    "type": "statuspage",
+    "cors": true,
+    "note": "Ospitata su incident.io; il summary non include gli incidenti, letti da incidents.json"
+  },
+  {
+    "id": "firebase",
+    "name": "Firebase",
+    "statusPage": "https://status.firebase.google.com",
+    "api": "https://status.firebase.google.com/incidents.json",
+    "type": "google-incidents",
+    "cors": true
+  },
+  {
+    "id": "render",
+    "name": "Render",
+    "statusPage": "https://status.render.com",
+    "api": "https://status.render.com/api/v2/summary.json",
+    "type": "statuspage",
+    "cors": true
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "statusPage": "https://www.githubstatus.com",
+    "api": "https://www.githubstatus.com/api/v2/summary.json",
+    "type": "statuspage",
+    "cors": true
+  }
+]

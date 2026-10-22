@@ -1,0 +1,203 @@
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --text: #15171a;
+  --muted: #5d636b;
+  --border: #e2e5e9;
+  --link: #1d4ed8;
+
+  --ok: #15803d;      --ok-bg: #e8f6ed;
+  --warn: #a16207;    --warn-bg: #fdf4dc;
+  --bad: #b91c1c;     --bad-bg: #fde8e8;
+  --maint: #1d4ed8;   --maint-bg: #e6edfd;
+  --unk: #52525b;     --unk-bg: #ececef;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1114;
+    --card: #181b20;
+    --text: #e8eaed;
+    --muted: #9aa1aa;
+    --border: #2a2f36;
+    --link: #8ab4ff;
+    --ok: #4ade80;      --ok-bg: #12291b;
+    --warn: #facc15;    --warn-bg: #2d2610;
+    --bad: #f87171;     --bad-bg: #331617;
+    --maint: #8ab4ff;   --maint-bg: #172238;
+    --unk: #b4b4bd;     --unk-bg: #24262b;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f1114;
+  --card: #181b20;
+  --text: #e8eaed;
+  --muted: #9aa1aa;
+  --border: #2a2f36;
+  --link: #8ab4ff;
+  --ok: #4ade80;      --ok-bg: #12291b;
+  --warn: #facc15;    --warn-bg: #2d2610;
+  --bad: #f87171;     --bad-bg: #331617;
+  --maint: #8ab4ff;   --maint-bg: #172238;
+  --unk: #b4b4bd;     --unk-bg: #24262b;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+a { color: var(--link); }
+
+.top, main, .piede {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+h1 { font-size: 1.25rem; margin: 0; }
+
+.tema {
+  font: inherit;
+  font-size: 1.1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+/* Colori per stato, usati da riepilogo, badge e bordo delle schede */
+[data-stato="operativo"]    { --c: var(--ok);    --c-bg: var(--ok-bg); }
+[data-stato="degradato"]    { --c: var(--warn);  --c-bg: var(--warn-bg); }
+[data-stato="problemi"]     { --c: var(--bad);   --c-bg: var(--bad-bg); }
+[data-stato="manutenzione"] { --c: var(--maint); --c-bg: var(--maint-bg); }
+[data-stato="sconosciuto"]  { --c: var(--unk);   --c-bg: var(--unk-bg); }
+
+.riepilogo {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  background: var(--c-bg);
+  border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+}
+
+.riepilogo-titolo {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 650;
+  color: var(--c);
+}
+
+.riepilogo-dettaglio { margin: .25rem 0 0; color: var(--muted); font-size: .95rem; }
+.riepilogo-dettaglio:empty { display: none; }
+
+.avviso {
+  margin: 0 0 1rem;
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  background: var(--warn-bg);
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+  font-size: .95rem;
+}
+
+.lista { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+
+.scheda {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--c);
+  border-radius: 12px;
+  padding: .9rem 1rem;
+  min-width: 0;
+}
+
+.scheda-testa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+
+.scheda h2 { font-size: 1.05rem; margin: 0; }
+
+.badge {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  background: var(--c-bg);
+  color: var(--c);
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+.badge::before {
+  content: "";
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.descrizione { margin: .35rem 0 0; color: var(--muted); font-size: .95rem; overflow-wrap: anywhere; }
+
+.incidenti { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .5rem; }
+
+.incidente {
+  padding: .55rem .7rem;
+  border-radius: 8px;
+  background: var(--c-bg);
+  font-size: .93rem;
+  overflow-wrap: anywhere;
+}
+
+.incidente a { font-weight: 600; text-decoration: none; color: var(--text); }
+.incidente a:hover { text-decoration: underline; }
+.incidente-meta { display: block; color: var(--muted); font-size: .85rem; margin-top: .15rem; }
+
+.scheda-piede {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .25rem .75rem;
+  margin-top: .7rem;
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.vecchio { color: var(--warn); font-weight: 600; }
+
+.piede { color: var(--muted); font-size: .85rem; padding-top: 1.5rem; padding-bottom: 2rem; }
+.piede p { margin: .25rem 0; }
+
+@media (min-width: 40rem) {
+  h1 { font-size: 1.5rem; }
+  .top { padding-top: 1.5rem; }
+}
