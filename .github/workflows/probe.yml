@@ -1,7 +1,7 @@
 name: Probe API di stato
 on:
   push:
-    paths: ['scripts/probe.mjs', '.github/workflows/probe.yml']
+    paths: ['scripts/probe*.mjs', '.github/workflows/probe.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,4 +13,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node scripts/probe.mjs
+      - run: node scripts/probe.mjs && node scripts/probe-deep.mjs
