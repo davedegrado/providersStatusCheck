@@ -13,4 +13,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node scripts/probe.mjs && node scripts/probe-deep.mjs
+      - run: node scripts/probe.mjs && node scripts/probe-railway.mjs
