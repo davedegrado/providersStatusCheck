@@ -16,6 +16,32 @@ Dashboard statica (GitHub Pages) con lo stato di Cloudflare, Supabase, Railway, 
 - Se `status.json` ha più di 30 minuti compare un avviso, e ogni provider con dato più vecchio di 30 minuti
   viene mostrato come sconosciuto (con l'ultimo stato noto).
 
+## Servizi che uso
+
+Ogni provider in `providers.json` può avere un `filtro`: lo stato dipende solo dai componenti indicati,
+gli altri problemi restano visibili ma chiusi sotto "non ti riguarda". Le voci sono espressioni regolari
+confrontate con "Gruppo / Componente" (l'elenco dei nomi si ottiene con `node scripts/componenti.mjs`, o lanciando
+il workflow "Diagnostica API di stato").
+
+| Campo | Significato |
+|---|---|
+| `componenti` | servizi da cui dipendono le app: decidono lo stato |
+| `secondari` | build, deploy, dashboard: toccano il tuo lavoro, non gli utenti; al massimo "degradato" |
+| `soloIncidenti` | contano solo se citati in un incidente (es. datacenter europei di Cloudflare), come "secondari" |
+| `ignora` | per incidenti senza componenti (Supabase, Resend): titoli su funzioni che non usi |
+| `altrove` / `qui` | titoli su altre regioni non contano, a meno che citino anche la tua |
+
+Nel dubbio un incidente conta. Configurazione attuale:
+
+- **Cloudflare**: DNS, CDN, certificati SSL, Workers (+ Assets, KV), Pages, Email Routing; secondari Registrar,
+  aggiornamenti DNS, Workers Builds, dashboard, API; datacenter europei solo informativi.
+- **Supabase**: eu-central-1 e Auth; ignorati Management API, ciclo di vita dei progetti, Edge Functions, Realtime, log.
+- **Railway**: Compute, Storage e rete in tutte le regioni; build, deploy e dashboard secondari.
+- **Resend**: invio (singolo e batch), API, webhook ed eventi (ricezione); ignorati broadcast e automazioni.
+- **Firebase**: Cloud Messaging.
+- **GitHub**: Git, Actions, Pages, Webhooks, API, tutti secondari (non toccano gli utenti delle app).
+- **Render**: nessun filtro.
+
 ## API verificate (ottobre 2026, dai runner GitHub)
 
 | Provider   | API | Tipo | CORS |

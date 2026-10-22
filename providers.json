@@ -5,7 +5,61 @@
     "statusPage": "https://www.cloudflarestatus.com",
     "api": "https://www.cloudflarestatus.com/api/v2/summary.json",
     "type": "statuspage",
-    "cors": true
+    "cors": true,
+    "filtro": {
+      "componenti": [
+        "(^|/ )Authoritative DNS$",
+        "(^|/ )CDN/Cache$",
+        "(^|/ )SSL Certificate Provisioning$",
+        "(^|/ )Workers$",
+        "(^|/ )Workers Assets$",
+        "(^|/ )Workers KV$",
+        "(^|/ )Pages$",
+        "(^|/ )Email Routing$"
+      ],
+      "secondari": [
+        "(^|/ )DNS Updates$",
+        "(^|/ )Registrar$",
+        "(^|/ )Workers Builds$",
+        "(^|/ )Wrangler$",
+        "(^|/ )Dashboard$",
+        "(^|/ )API$"
+      ],
+      "soloIncidenti": [
+        "^Europe / "
+      ],
+      "nomeInfo": "Datacenter europei non operativi, traffico spostato sugli altri",
+      "altrove": [
+        "United States",
+        "\\bUS\\b",
+        "\\bU\\.S\\.",
+        "Canada",
+        "Mexico",
+        "Latin America",
+        "Brazil",
+        "Asia",
+        "APAC",
+        "India",
+        "China",
+        "Japan",
+        "Korea",
+        "Singapore",
+        "Australia",
+        "Oceania",
+        "Africa",
+        "Middle East"
+      ],
+      "qui": [
+        "Europe",
+        "Italy",
+        "Milan",
+        "Rome",
+        "Palermo",
+        "global",
+        "worldwide",
+        "all regions"
+      ]
+    }
   },
   {
     "id": "supabase",
@@ -14,7 +68,64 @@
     "api": "https://status.supabase.com/api/v2/summary.json",
     "type": "statuspage",
     "cors": true,
-    "note": "Ospitata su incident.io, API compatibile Statuspage"
+    "note": "Ospitata su incident.io, API compatibile Statuspage",
+    "filtro": {
+      "componenti": [
+        "(^|/ )eu-central-1$",
+        "(^|/ )Auth$"
+      ],
+      "secondari": [
+        "(^|/ )Dashboard$"
+      ],
+      "ignora": [
+        "lifecycle",
+        "project creation",
+        "pausing",
+        "restoration",
+        "Mgmt API",
+        "Management API",
+        "Support",
+        "Billing",
+        "Edge Function",
+        "Realtime",
+        "Branching",
+        "Log ingestion",
+        "Logging",
+        "Analytics"
+      ],
+      "altrove": [
+        "\\b(us|ap|ca|sa|me|af|eu)-[a-z]+-\\d\\b",
+        "\\bap-\\w+",
+        "\\bUS\\b",
+        "United States",
+        "APAC",
+        "Asia",
+        "India",
+        "Mumbai",
+        "Sydney",
+        "Tokyo",
+        "Seoul",
+        "Singapore",
+        "S[aã]o Paulo",
+        "Canada",
+        "Oregon",
+        "Virginia",
+        "Ohio",
+        "California",
+        "London",
+        "Ireland",
+        "Paris",
+        "Stockholm",
+        "Zurich"
+      ],
+      "qui": [
+        "eu-central-1",
+        "Frankfurt",
+        "all regions",
+        "multiple regions",
+        "global"
+      ]
+    }
   },
   {
     "id": "railway",
@@ -23,7 +134,18 @@
     "api": "https://status.railway.com/api/status",
     "type": "railway",
     "cors": false,
-    "note": "Pagina proprietaria (non più Instatus); nessun header CORS, solo dal workflow"
+    "note": "Pagina proprietaria (non più Instatus); nessun header CORS, solo dal workflow",
+    "filtro": {
+      "componenti": [
+        "^[^/]+ / (Compute|Storage|Networking — Public|Networking — Private|Networking — Outbound Static IPs)$"
+      ],
+      "secondari": [
+        "^[^/]+ / (Builds|Deployments)$",
+        "GitHub — Auto-Deploys",
+        "API — backboard",
+        "Dashboard — railway"
+      ]
+    }
   },
   {
     "id": "resend",
@@ -32,7 +154,30 @@
     "api": "https://resend-status.com/api/v2/summary.json",
     "type": "statuspage",
     "cors": true,
-    "note": "Ospitata su incident.io; il summary non include gli incidenti, letti da incidents.json"
+    "note": "Ospitata su incident.io; il summary non include gli incidenti, letti da incidents.json",
+    "filtro": {
+      "componenti": [
+        "(^|/ )Single Email$",
+        "(^|/ )Batch Emails$",
+        "(^|/ )General API$",
+        "(^|/ )Webhooks$",
+        "(^|/ )Email Events$"
+      ],
+      "secondari": [
+        "(^|/ )Dashboard$"
+      ],
+      "ignora": [
+        "Broadcast",
+        "Audience",
+        "Automation",
+        "MCP",
+        "Website",
+        "team provisioning",
+        "verify new domains",
+        "domain verification",
+        "function processing"
+      ]
+    }
   },
   {
     "id": "firebase",
@@ -40,7 +185,12 @@
     "statusPage": "https://status.firebase.google.com",
     "api": "https://status.firebase.google.com/incidents.json",
     "type": "google-incidents",
-    "cors": true
+    "cors": true,
+    "filtro": {
+      "componenti": [
+        "^Cloud Messaging$"
+      ]
+    }
   },
   {
     "id": "render",
@@ -56,6 +206,15 @@
     "statusPage": "https://www.githubstatus.com",
     "api": "https://www.githubstatus.com/api/v2/summary.json",
     "type": "statuspage",
-    "cors": true
+    "cors": true,
+    "filtro": {
+      "secondari": [
+        "(^|/ )Git Operations$",
+        "(^|/ )Actions$",
+        "(^|/ )Pages$",
+        "(^|/ )Webhooks$",
+        "(^|/ )API Requests$"
+      ]
+    }
   }
 ]

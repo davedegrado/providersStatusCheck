@@ -185,17 +185,29 @@ function disegnaScheda(r) {
     ? `Nessuna risposta valida dalla pagina di stato (${r.errore}).`
     : r.descrizione;
 
-  const incidenti = (r.incidenti ?? []).map((i) => {
+  const disegnaIncidente = (i) => {
     const url = urlSicuro(i.url);
     const titolo = url ? el('a', { href: url, target: '_blank', rel: 'noopener' }, i.titolo || 'Incidente') : el('strong', {}, i.titolo || 'Incidente');
     const meta = [
       i.tipo === 'manutenzione' ? 'Manutenzione' : null,
       i.servizio,
+      i.coinvolti?.length ? `riguarda ${i.coinvolti.slice(0, 3).join(', ')}` : null,
       i.stato ? String(i.stato).toLowerCase().replaceAll('_', ' ') : null,
       i.aggiornato ? `aggiornato ${quando(i.aggiornato)}` : null,
     ].filter(Boolean).join(' · ');
-    return el('li', { class: 'incidente' }, titolo, el('span', { class: 'incidente-meta' }, meta));
-  });
+    return el('li', { class: 'incidente', 'data-stato': i.gravita ?? null }, titolo, el('span', { class: 'incidente-meta' }, meta));
+  };
+  // Dati vecchi senza il campo "rilevante" valgono come rilevanti.
+  const tutti = r.incidenti ?? [];
+  const propri = tutti.filter((i) => i.rilevante !== false).map(disegnaIncidente);
+  const altri = tutti.filter((i) => i.rilevante === false).map(disegnaIncidente);
+  const incidenti = propri;
+  const altriBlocco = altri.length
+    ? el('details', { class: 'altri' },
+      el('summary', {}, altri.length === 1 ? '1 problema che non ti riguarda' : `${altri.length} problemi che non ti riguardano`),
+      el('ul', { class: 'incidenti' }, ...altri))
+    : null;
+  const note = (r.note ?? []).map((n) => el('li', {}, n));
 
   const fonte = r.fonte === 'browser' ? 'letto dal browser' : r.fonte === 'workflow' ? 'controllo automatico' : null;
   const controllo = r.controllato
@@ -212,6 +224,8 @@ function disegnaScheda(r) {
       el('span', { class: 'badge' }, ETICHETTE[r.stato] ?? r.stato)),
     descrizione ? el('p', { class: 'descrizione' }, descrizione) : null,
     incidenti.length ? el('ul', { class: 'incidenti' }, ...incidenti) : null,
+    note.length ? el('ul', { class: 'note' }, ...note) : null,
+    altriBlocco,
     el('div', { class: 'scheda-piede' },
       el('span', {}, controllo, vecchio ? el('br') : null, vecchio),
       pagina ? el('a', { href: pagina, target: '_blank', rel: 'noopener' }, 'Pagina ufficiale ↗') : null));
