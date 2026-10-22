@@ -2,7 +2,8 @@ name: Aggiorna stato e pubblica
 
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    # Minuti sfasati: allo scoccare dell'ora GitHub è più carico e ritarda le esecuzioni pianificate.
+    - cron: '7-59/10 * * * *'
   push:
     branches: [main]
   workflow_dispatch:
